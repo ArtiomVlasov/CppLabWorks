@@ -1,0 +1,69 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+build
+cpp-template/CMakeFiles/cmake.check_cache
+cpp-template/CMakeFiles/CMakeDirectoryInformation.cmake
+cpp-template/CMakeFiles/CMakeOutput.log
+cpp-template/CMakeFiles/Makefile.cmake
+cpp-template/CMakeFiles/Makefile2
+cpp-template/CMakeFiles/progress.marks
+cpp-template/CMakeFiles/TargetDirectories.txt
+cpp-template/CMakeFiles/3.22.1/CMakeCCompiler.cmake
+cpp-template/CMakeFiles/3.22.1/CMakeCXXCompiler.cmake
+cpp-template/CMakeFiles/3.22.1/CMakeDetermineCompilerABI_C.bin
+cpp-template/CMakeFiles/3.22.1/CMakeDetermineCompilerABI_CXX.bin
+cpp-template/CMakeFiles/3.22.1/CMakeSystem.cmake
+cpp-template/CMakeFiles/3.22.1/CompilerIdC/CMakeCCompilerId.c
+cpp-template/CMakeFiles/3.22.1/CompilerIdCXX/CMakeCXXCompilerId.cpp
+cpp-template/CMakeFiles/Progress/count.txt
+cpp-template/CMakeFiles/corelib.dir/build.make
+cpp-template/CMakeFiles/corelib.dir/cmake_clean.cmake
+cpp-template/CMakeFiles/corelib.dir/compiler_depend.make
+cpp-template/CMakeFiles/corelib.dir/compiler_depend.ts
+cpp-template/CMakeFiles/corelib.dir/depend.make
+cpp-template/CMakeFiles/corelib.dir/DependInfo.cmake
+cpp-template/CMakeFiles/corelib.dir/flags.make
+cpp-template/CMakeFiles/corelib.dir/progress.make
+cpp-template/CMakeFiles/nsuoop-cpp-template-lab1.dir/build.make
+cpp-template/CMakeFiles/nsuoop-cpp-template-lab1.dir/cmake_clean.cmake
+cpp-template/CMakeFiles/nsuoop-cpp-template-lab1.dir/compiler_depend.make
+cpp-template/CMakeFiles/nsuoop-cpp-template-lab1.dir/compiler_depend.ts
+cpp-template/CMakeFiles/nsuoop-cpp-template-lab1.dir/depend.make
+cpp-template/CMakeFiles/nsuoop-cpp-template-lab1.dir/DependInfo.cmake
+cpp-template/CMakeFiles/nsuoop-cpp-template-lab1.dir/flags.make
+cpp-template/CMakeFiles/nsuoop-cpp-template-lab1.dir/link.txt
+cpp-template/CMakeFiles/nsuoop-cpp-template-lab1.dir/progress.make
+cpp-template/output/sem_14.09.24
+cpp-template/output/task2
+cpp-template/output/test1
+cpp-template/lab2/output/hashMap
