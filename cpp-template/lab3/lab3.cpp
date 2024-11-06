@@ -3,9 +3,9 @@ class cell
 private:
     bool state;
 public:
-    cell():state(false){};
-    void killCell();
-    void beginLife();
+    cell();
+    void killCell(int x, int y);
+    void beginLife(int x, int y);
     ~cell();
 };
 
