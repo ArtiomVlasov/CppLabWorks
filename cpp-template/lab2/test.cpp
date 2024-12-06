@@ -2,7 +2,7 @@
 #include "hashMap.hpp"
 
 TEST(HashMapTest, TestInsertAndRetrieve) {
-    HashMap map;
+    HashMap<std::string, std::string> map;
     map["key1"] = "value1";
     map["key2"] = "value2";
 
@@ -12,7 +12,7 @@ TEST(HashMapTest, TestInsertAndRetrieve) {
 }
 
 TEST(HashMapTest, TestOverwriteValue) {
-    HashMap map;
+    HashMap<std::string, std::string> map;
     map["key1"] = "value1";
     map["key1"] = "new_value1";
 
@@ -21,7 +21,7 @@ TEST(HashMapTest, TestOverwriteValue) {
 }
 
 TEST(HashMapTest, TestErase) {
-    HashMap map;
+    HashMap<std::string, std::string> map;
     map["key1"] = "value1";
     map["key2"] = "value2";
 
@@ -34,7 +34,7 @@ TEST(HashMapTest, TestErase) {
 }
 
 TEST(HashMapTest, TestClear) {
-    HashMap map;
+    HashMap<std::string, std::string> map;
     map["key1"] = "value1";
     map["key2"] = "value2";
     map.clear();
@@ -45,7 +45,7 @@ TEST(HashMapTest, TestClear) {
 }
 
 TEST(HashMapTest, TestContains) {
-    HashMap map;
+    HashMap<std::string, std::string> map;
     map["key1"] = "value1";
 
     ASSERT_TRUE(map.contains("key1"));
@@ -53,11 +53,11 @@ TEST(HashMapTest, TestContains) {
 }
 
 TEST(HashMapTest, TestCopyConstructor) {
-    HashMap map;
+    HashMap<std::string, std::string> map;
     map["key1"] = "value1";
     map["key2"] = "value2";
 
-    HashMap copiedMap = map;
+    HashMap<std::string, std::string> copiedMap = map;
 
     ASSERT_EQ(copiedMap["key1"], "value1");
     ASSERT_EQ(copiedMap["key2"], "value2");
@@ -67,11 +67,11 @@ TEST(HashMapTest, TestCopyConstructor) {
 }
 
 TEST(HashMapTest, TestAssignmentOperator) {
-    HashMap map;
+    HashMap<std::string, std::string> map;
     map["key1"] = "value1";
     map["key2"] = "value2";
 
-    HashMap assignedMap;
+    HashMap<std::string, std::string> assignedMap;
     assignedMap = map;
 
     ASSERT_EQ(assignedMap["key1"], "value1");
@@ -79,4 +79,17 @@ TEST(HashMapTest, TestAssignmentOperator) {
     ASSERT_EQ(assignedMap.size(), 2);
     map["key1"] = "new_value1";
     ASSERT_EQ(assignedMap["key1"], "value1");
+}
+
+TEST(HashMapTest, TestDifferentKeyAndValueTypes) {
+    HashMap<int, double> map;
+    map[1] = 1.1;
+    map[2] = 2.2;
+
+    ASSERT_EQ(map[1], 1.1);
+    ASSERT_EQ(map[2], 2.2);
+    ASSERT_EQ(map.size(), 2);
+
+    map[1] = 3.3;
+    ASSERT_EQ(map[1], 3.3);
 }

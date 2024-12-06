@@ -26,7 +26,7 @@ endif()
 
 # описываем основную библиотеку, т.е. библиотеку, содержащую все cpp-файлы, кроме main.cpp
 # TODO: отредактировать список cpp-файлов
-add_library(corelib OBJECT hashMap.cpp)
+add_library(corelib OBJECT hashMap.hpp)
 
 # описываем исполняемый файл основной программы: это main.cpp + основная библиотека
 add_executable(${lab2b} lab2b.cpp)
