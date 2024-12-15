@@ -12,6 +12,7 @@ int main(int argc, char **argv){
         std::vector<Comand> comands;
 
         readComands(&comands, data.getTodoFile(), (int)data.getInputFiles().size());
+        
 
         SoundProcessor processor(&data, &comands);
 

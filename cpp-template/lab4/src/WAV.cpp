@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "WAV.hpp"
 
+
 WAV::WAV(std::string filepath) : filepath(filepath) {}
 
 WAV::~WAV() {}
@@ -40,15 +41,21 @@ void WAV::checkHeader()
     }
 }
 
-void WAV::readHeader(std::ifstream &file)
+void WAV::readHeader()
 {
+    std::ifstream file(filepath, std::ios::binary);
+    if (!file)
+    {
+        throw std::runtime_error("cannot open file " + filepath);
+    }
+
     file.read((char*)(&header), sizeof(header) - sizeof(unsigned long) - 4);
 
     int chunkSize;
     char chunkId[4];
     while (file.read(chunkId, 4))
     {
-        file.read(reinterpret_cast<char *>(&chunkSize), 4);
+        file.read((char *)(&chunkSize), 4);
         if (checkChunk(chunkId, "data"))
         {
             const char *chunkId_ = "data";
@@ -67,20 +74,22 @@ void WAV::readHeader(std::ifstream &file)
             break;
         }
     }
+    file.close();
 }
 
-void WAV::setFileData()
+void WAV::setFileData(size_t startSample, size_t chunkSize)
 {
     std::ifstream file(filepath, std::ios::binary);
     if (!file)
     {
         throw std::runtime_error("cannot open file " + filepath);
     }
+    file.seekg(sizeof(WAVHEADER) + startSample * sizeof(short)); // Seek to the correct position.
 
-    readHeader(file);
+    samples.clear();
+    samples.resize(chunkSize);
 
-    samples.resize(header.subchunk2Size / sizeof(short));
-    file.read(reinterpret_cast<char *>(samples.data()), header.subchunk2Size);
+    file.read((char *)(samples.data()), chunkSize * sizeof(short));
     if (file.fail())
     {
         throw std::runtime_error("error reading samples from " + filepath);
@@ -103,6 +112,16 @@ void WAV::copyHeader(WAV *inputWAV)
     this->header = inputWAV->header;
 }
 
+void WAV::writeOutputHeader(const std::string &filepath_){
+    std::ofstream file(filepath_, std::ios::binary);
+    if (!file)
+    {
+        throw std::runtime_error("error open output file: " + filepath);
+    }
+    file.write((char*)(&header), sizeof(WAVHEADER));
+    file.close();
+}
+
 void WAV::writeOutputWAV(const std::string &filepath_)
 {
     std::ofstream file(filepath_, std::ios::binary);
@@ -111,7 +130,6 @@ void WAV::writeOutputWAV(const std::string &filepath_)
         throw std::runtime_error("error open output file: " + filepath);
     }
 
-    file.write((char*)(&header), sizeof(WAVHEADER));
     file.write((char*)(samples.data()), samples.size() * sizeof(short));
     file.close();
 }

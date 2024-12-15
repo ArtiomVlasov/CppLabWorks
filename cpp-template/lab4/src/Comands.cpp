@@ -24,11 +24,9 @@ void readComands(std::vector<Comand> *Comands, std::string todoFilePath, int inp
         iss >> command;
         if (command == "mute")
         {
-            
             int start, end;
             if (iss >> start >> end)
             {
-                
                 if (start < 0)
                 {
                     std::cout << "in mute command detected negative start second " << start << "\nwill be applied from 0 second" << std::endl;
@@ -43,6 +41,7 @@ void readComands(std::vector<Comand> *Comands, std::string todoFilePath, int inp
                     args.push_back(start);
                     args.push_back(end);
                     Comands->push_back(Comand(command, args));
+                    
                 }
                 else
                 {
@@ -83,6 +82,7 @@ void readComands(std::vector<Comand> *Comands, std::string todoFilePath, int inp
                     args.push_back(start);
                     args.push_back(end);
                     Comands->push_back(Comand(command, args));
+                
                 }
                 else
                 {
@@ -135,6 +135,7 @@ void readComands(std::vector<Comand> *Comands, std::string todoFilePath, int inp
             std::cout << "\nexeption on line: " << lineCount << std::endl;
             throw std::runtime_error("unknown command " + command);
         }
+        args.clear();
         lineCount++;
     }
     file.close();

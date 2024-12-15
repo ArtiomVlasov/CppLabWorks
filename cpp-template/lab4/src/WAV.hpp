@@ -25,16 +25,18 @@ private:
     };
 
     std::string filepath;
-    std::vector<short> samples;
+    
     WAVHEADER header;
     bool checkChunk(const char* name, const char* expect);
     void checkHeader ();
-    void readHeader(std::ifstream &file);
    
 public:
     WAV(std::string filepath);
     virtual ~WAV();
-    void setFileData();
+    std::vector<short> samples;
+    void readHeader();
+    void writeOutputHeader(const std::string &filepath_);
+    void setFileData(size_t startSample, size_t chunkSize);
     std::vector<short>& getSamples();
     WAVHEADER getHeader();
     void copyHeader(WAV* inputWAV);

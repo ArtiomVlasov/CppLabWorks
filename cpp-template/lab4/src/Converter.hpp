@@ -11,7 +11,7 @@ class Converter
 {
 private:
 public:
-    virtual void apply(WAV& wavFile) = 0;
+    virtual void apply(WAV& wavFile, size_t currentSample) = 0;
     virtual ~Converter() = default;
 };
 
@@ -21,7 +21,7 @@ private:
     size_t endSample;
 public:
     Mute(Comand *cmd);
-    void apply(WAV& file);
+    void apply(WAV& file, size_t currentSample);
     virtual ~Mute() = default;
 };
 
@@ -32,7 +32,7 @@ private:
     size_t endSample;
 public:
     Mix(Comand *cmd, const std::string &secondFilePath);
-    void apply(WAV& file);
+    void apply(WAV& file, size_t currentSample);
     virtual ~Mix() = default;
 };
 
@@ -43,6 +43,6 @@ private:
     size_t endSample;
 public:
     Random(Comand *cmd);
-    void apply(WAV& file);
+    void apply(WAV& file, size_t currentSample);
     virtual ~Random() = default;
 };
