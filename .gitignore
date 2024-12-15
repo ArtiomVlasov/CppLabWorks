@@ -867,3 +867,9 @@ cpp-template/lab4/_deps/googletest-subbuild/googletest-populate-prefix/src/googl
 cpp-template/lab4/_deps/googletest-subbuild/googletest-populate-prefix/tmp/googletest-populate-cfgcmd.txt
 cpp-template/lab4/_deps/googletest-subbuild/googletest-populate-prefix/tmp/googletest-populate-mkdirs.cmake
 cpp-template/lab4/instruction.txt
+cpp-template/main.cpp
+cpp-template/lab4/_deps/googletest-src/WORKSPACE.bzlmod
+cpp-template/lab4/_deps/googletest-src/MODULE.bazel
+cpp-template/lab4/_deps/googletest-src/googletest_deps.bzl
+cpp-template/lab4/_deps/googletest-src/fake_fuchsia_sdk.bzl
+cpp-template/lab4/_deps/googletest-subbuild/googletest-populate-prefix/src/v1.15.2.zip
