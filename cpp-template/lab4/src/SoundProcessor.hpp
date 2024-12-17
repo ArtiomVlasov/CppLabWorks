@@ -10,6 +10,11 @@
 #include "Converter.hpp"
 #include "Comands.hpp"
 
+class ConverterFactory {
+public:
+    static std::unique_ptr<Converter> createConverter(Comand *cmd, DATA* data);
+};
+
 class SoundProcessor
 {
 private:

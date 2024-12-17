@@ -2,26 +2,15 @@
 #include "exeptions.hpp"
 #define SAMPLE_RATE 44100
 
-std::unique_ptr<Converter> giveConverter(Comand *cmd, DATA *data)
-{
-    ConverterFactory *cnv;
-    if (cmd->getName() == "mute")
-    {
-        cnv = new MuteFactory();
-    }
-    else if (cmd->getName() == "mix")
-    {
-        cnv = new MixFactory(data->getInputFiles()[cmd->getArg(0)]);
-    }
-    else if (cmd->getName() == "random")
-    {
-        cnv = new RandomFactory();
-    }
-    else
-    {
-        return nullptr;
-    }
-    return cnv->createConverter(cmd);
+std::unique_ptr<Converter> ConverterFactory::createConverter(Comand *cmd, DATA *data) {
+        if (cmd->getName() == "mute") {
+            return std::make_unique<Mute>(cmd);
+        } else if (cmd->getName() == "mix") {
+            return std::make_unique<Mix>(cmd, data->getInputFiles()[cmd->getArg(0)]);
+        } else if (cmd->getName() == "random") {
+            return std::make_unique<Random>(cmd);
+        }
+        return nullptr; 
 }
 
 SoundProcessor::SoundProcessor(DATA *data, std::vector<Comand> *Comands) : data(data), Comands(Comands) {}
@@ -46,7 +35,7 @@ void SoundProcessor::process()
         // Apply all commands to the current chunk
         for (auto cmd : *Comands)
         {
-            std::unique_ptr<Converter> converter = giveConverter(&cmd, data);
+            std::unique_ptr<Converter> converter = ConverterFactory::createConverter(&cmd, data);
             if (converter)
             {
                 converter->apply(mainFile, currentSample);
