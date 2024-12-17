@@ -1,4 +1,5 @@
 #include "Comands.hpp"
+#include "exeptions.hpp"
 
 Comand::Comand(std::string name, std::vector<int> args) : name(name), args(args) {}
 
@@ -11,7 +12,7 @@ void readComands(std::vector<Comand> *Comands, std::string todoFilePath, int inp
     std::ifstream file(todoFilePath);
     if (!file)
     {
-        throw std::runtime_error("error opening todo file" + todoFilePath);
+        throw FileOpenException(todoFilePath);
     }
 
     std::string line;
@@ -34,27 +35,25 @@ void readComands(std::vector<Comand> *Comands, std::string todoFilePath, int inp
                               << std::endl;
                     start = 0;
                 }
-                
+
                 if (start < end)
                 {
-                    
+
                     args.push_back(start);
                     args.push_back(end);
                     Comands->push_back(Comand(command, args));
-                    
                 }
                 else
                 {
-                    std::cerr << "invalid arguments for mute " << start << end << std::endl;
-                    std::cout << "warning on line: " << lineCount << std::endl
-                              << std::endl;
+                    throw InvalidCommandArgumentsException(
+                        "for mute: " + std::to_string(start) + std::to_string(end) +"\nwarning on line: " + std::to_string(lineCount));
                 }
             }
             else
             {
-                std::cerr << "cannot read values for mute command!\ncommand will be not applied " << std::endl;
-                std::cout << "warning on line: " << lineCount << std::endl
-                          << std::endl;
+                throw InvalidCommandArgumentsException(
+                   ": cannot read values for mute command!\ncommand will be not applied \nwarning on line: " + std::to_string(lineCount)
+                   );
             }
         }
         else if (command == "mix")
@@ -64,9 +63,8 @@ void readComands(std::vector<Comand> *Comands, std::string todoFilePath, int inp
             {
                 if (filenum < 1 || filenum > inputFilesAmount)
                 {
-                    std::cerr << "invalid number of file for mix command: " << filenum << "\nthis command will be not applied\n";
-                    std::cout << "warning on line: " << lineCount << std::endl
-                              << std::endl;
+                    throw InvalidCommandArgumentsException(
+                    ": invalid number of file for mix command: " + std::to_string(filenum) + "\nthis command will be not applied\n" + "warning on line: " + std::to_string(lineCount));
                     continue;
                 }
                 if (start < 0)
@@ -82,20 +80,17 @@ void readComands(std::vector<Comand> *Comands, std::string todoFilePath, int inp
                     args.push_back(start);
                     args.push_back(end);
                     Comands->push_back(Comand(command, args));
-                
                 }
                 else
                 {
-                    std::cerr << "invalid arguments for mix " << filenum << " " << start << " " << end << std::endl;
-                    std::cout << "warning on line: " << lineCount << std::endl
-                              << std::endl;
+                   throw InvalidCommandArgumentsException("for mix: " + std::to_string(start) + std::to_string(end) +"\nwarning on line: " + std::to_string(lineCount));
                 }
             }
             else
             {
-                std::cerr << "cannot read values for mix command!\ncommand will be not applied" << std::endl;
-                std::cout << "warning on line: " << lineCount << std::endl
-                          << std::endl;
+                throw InvalidCommandArgumentsException(
+                   ": cannot read values for mix command!\ncommand will be not applied \nwarning on line: " + std::to_string(lineCount)
+                   );
             }
         }
         else if (command == "random")
@@ -118,22 +113,20 @@ void readComands(std::vector<Comand> *Comands, std::string todoFilePath, int inp
                 }
                 else
                 {
-                    std::cerr << "invalid arguments for random " << start << " " << end << std::endl;
-                    std::cout << "warning on line: " << lineCount << std::endl
-                              << std::endl;
+                    throw InvalidCommandArgumentsException("for random: " + std::to_string(start) + std::to_string(end) +"\nwarning on line: " + std::to_string(lineCount));
                 }
             }
             else
             {
-                std::cerr << "cannot read values for random command!\ncommand will be not applied" << std::endl;
-                std::cout << "warning on line: " << lineCount << std::endl
-                          << std::endl;
+                throw InvalidCommandArgumentsException(
+                   ": cannot read values for random command!\ncommand will be not applied \nwarning on line: " + std::to_string(lineCount)
+                   );
             }
         }
         else
         {
             std::cout << "\nexeption on line: " << lineCount << std::endl;
-            throw std::runtime_error("unknown command " + command);
+            throw UnknownCommandException(command +  "\nexeption on line: " + std::to_string(lineCount));
         }
         args.clear();
         lineCount++;

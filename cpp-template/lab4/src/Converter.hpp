@@ -5,6 +5,7 @@
 #include "Comands.hpp"
 #include "DATA.hpp"
 #include "WAV.hpp"
+#include <memory>
 
 // virtual class for fabric 
 class Converter
@@ -45,4 +46,36 @@ public:
     Random(Comand *cmd);
     void apply(WAV& file, size_t currentSample);
     virtual ~Random() = default;
+};
+
+
+
+class ConverterFactory {
+public:
+    virtual std::unique_ptr<Converter> createConverter(Comand* cmd) = 0;
+    virtual ~ConverterFactory() = default;
+};
+
+class MuteFactory : public ConverterFactory {
+public:
+    std::unique_ptr<Converter> createConverter(Comand* cmd) override {
+        return std::make_unique<Mute>(cmd);
+    }
+};
+
+class MixFactory : public ConverterFactory {
+private:
+    std::string secondFilePath;
+public:
+    MixFactory(const std::string& filePath) : secondFilePath(filePath) {}
+    std::unique_ptr<Converter> createConverter(Comand* cmd) override {
+        return std::make_unique<Mix>(cmd, secondFilePath);
+    }
+};
+
+class RandomFactory : public ConverterFactory {
+public:
+    std::unique_ptr<Converter> createConverter(Comand* cmd) override {
+        return std::make_unique<Random>(cmd);
+    }
 };

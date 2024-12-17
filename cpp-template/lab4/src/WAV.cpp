@@ -1,6 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "WAV.hpp"
-
+#include "exeptions.hpp"
 
 WAV::WAV(std::string filepath) : filepath(filepath) {}
 
@@ -15,29 +15,29 @@ void WAV::checkHeader()
 {
     if (!checkChunk(header.riff, "RIFF") || !checkChunk(header.format, "WAVE"))
     {
-        throw std::runtime_error("Invalid WAV file format!\n");
+        throw SoundProcessorException("Not WAV");
     }
     if (header.audioFormat != 1)
     { // 1 соответствует PCM
-        throw std::runtime_error("Unsupported audio type: not PCM.");
+        throw WAVFormatException("not PCM.");
     }
 
     // Проверка количества каналов
     if (header.numChannels != 1)
     { // 1 канал для моно
-        throw std::runtime_error("not mono canal.");
+        throw WAVFormatException("not mono canal.");
     }
 
     // Проверка разрядности
     if (header.bitsPerSample != 16)
     { // 16 бит
-        throw std::runtime_error("not 16 bit per sample");
+        throw WAVFormatException("not 16 bit per sample");
     }
 
     // Проверка частоты
     if (header.sampleRate != 44100)
     { // 44100 Гц
-        throw std::runtime_error("not 44100 Hz");
+        throw WAVFormatException("not 44100 Hz");
     }
 }
 
@@ -46,7 +46,7 @@ void WAV::readHeader()
     std::ifstream file(filepath, std::ios::binary);
     if (!file)
     {
-        throw std::runtime_error("cannot open file " + filepath);
+        throw FileOpenException(filepath);
     }
 
     file.read((char*)(&header), sizeof(header) - sizeof(unsigned long) - 4);
@@ -70,7 +70,7 @@ void WAV::readHeader()
 
         if (file.eof() || file.fail())
         {
-            throw std::runtime_error("Cant find data chunk!\n");
+            throw WAVHeaderException("Cant find data chunk!\n");
             break;
         }
     }
@@ -82,7 +82,7 @@ void WAV::setFileData(size_t startSample, size_t chunkSize)
     std::ifstream file(filepath, std::ios::binary);
     if (!file)
     {
-        throw std::runtime_error("cannot open file " + filepath);
+        throw FileOpenException(filepath);
     }
     file.seekg(sizeof(WAVHEADER) + startSample * sizeof(short)); // Seek to the correct position.
 
@@ -92,7 +92,7 @@ void WAV::setFileData(size_t startSample, size_t chunkSize)
     file.read((char *)(samples.data()), chunkSize * sizeof(short));
     if (file.fail())
     {
-        throw std::runtime_error("error reading samples from " + filepath);
+        throw FileReadException("error reading samples from " + filepath);
     }
     file.close();
 }
@@ -116,7 +116,7 @@ void WAV::writeOutputHeader(const std::string &filepath_){
     std::ofstream file(filepath_, std::ios::binary);
     if (!file)
     {
-        throw std::runtime_error("error open output file: " + filepath);
+        throw FileOpenException( filepath);
     }
     file.write((char*)(&header), sizeof(WAVHEADER));
     file.close();
@@ -127,7 +127,7 @@ void WAV::writeOutputWAV(const std::string &filepath_)
     std::ofstream file(filepath_, std::ios::binary);
     if (!file)
     {
-        throw std::runtime_error("error open output file: " + filepath);
+        throw FileOpenException(filepath);
     }
 
     file.write((char*)(samples.data()), samples.size() * sizeof(short));

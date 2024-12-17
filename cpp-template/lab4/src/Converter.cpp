@@ -27,7 +27,6 @@ void Mix::apply(WAV &file, size_t currentSample)
     if (currentSample >= startSample && currentSample <= endSample)
     {
         WAV secondFile(secondFilePath);
-        secondFile.readHeader();
         size_t chunkSize = SAMPLE_RATE; // 1 секунда аудио
         size_t samplesToRead = std::min(chunkSize, endSample - currentSample);
         secondFile.setFileData(currentSample, samplesToRead);
