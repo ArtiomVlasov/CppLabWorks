@@ -21,18 +21,21 @@ std::string convert<std::string>(const std::string &str)
   return str;
 }
 
-
-// Функция для разбора строки с учётом экранирования
 void split(const std::string &str, std::vector<std::string> &cont, char delimiter = ',', char escapeChar = '"')
 {
     std::stringstream ss;
     bool inQuotes = false;
-    cont.clear(); // Очищаем контейнер
+    bool saveNext = false;
+    cont.clear();
     for (char c : str)
     {
-        if (c == escapeChar)
+        if (c == escapeChar && !saveNext)
         {
             inQuotes = !inQuotes;
+        }
+        else if (c != escapeChar && saveNext)
+        {
+            saveNext = false;
         }
         else if (c == delimiter && !inQuotes)
         {
@@ -40,19 +43,16 @@ void split(const std::string &str, std::vector<std::string> &cont, char delimite
             ss.str("");
             ss.clear();
         }
+        else if(c == '\\'){
+            saveNext = true;
+        }
         else
         {
             ss << c;
         }
     }
-    cont.push_back(ss.str()); // Добавляем последний токен
-    // Отладочный вывод
-    std::cout << "Parsed line: " << str << "\nTokens: ";
-    for (const auto &token : cont)
-    {
-        std::cout << "[" << token << "] ";
-    }
-    std::cout << std::endl;
+    cont.push_back(ss.str());
+    std::cout;
 }
 
 // Чтение элемента из строки в кортеж
@@ -147,7 +147,6 @@ public:
             std::string line;
             if (std::getline(ifs, line))
             {
-                std::cout << "Processing line: " << line << std::endl;
                 std::vector<std::string> items;
                 split(line, items, delimiter, escapeChar);
                 tuple = createTuple(items, std::index_sequence_for<Args...>());
