@@ -24,12 +24,14 @@ std::string convert<std::string>(const std::string &str)
 void split(const std::string &str, std::vector<std::string> &cont, char delimiter = ',', char escapeChar = '"')
 {
     std::stringstream ss;
+    bool inQuotes = false;
     bool saveNext = false;
     cont.clear();
     for (char c : str)
     {
         if (c == escapeChar && !saveNext)
         {
+            inQuotes = !inQuotes;
             continue;
         }
         else if (c != escapeChar && saveNext)
@@ -52,7 +54,6 @@ void split(const std::string &str, std::vector<std::string> &cont, char delimite
         }
     }
     cont.push_back(ss.str());
-    std::cout;
 }
 
 template <typename... Args>
