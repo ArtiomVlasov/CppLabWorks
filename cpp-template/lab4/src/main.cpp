@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstring>
+#include "Converter.hpp"
 #include "DATA.hpp"
 #include "SoundProcessor.hpp"
 #include "Comands.hpp"
@@ -12,11 +13,15 @@ int main(int argc, char **argv){
         std::vector<Comand> comands;
 
         readComands(&comands, data.getTodoFile(), (int)data.getInputFiles().size());
+        std::map<std::string, ConverterFactory *> converterFactory; 
+        converterFactory["mix"] = new MixFactory();
+        converterFactory["mute"] = new MuteFactory();
+        converterFactory["random"] = new RandomFactory();
         
-
+        
         SoundProcessor processor(&data, &comands);
 
-        processor.process();
+        processor.process(converterFactory);
         std::cout << "\nall good!\npath of result file: .\\" << data.getOutputFile() << std::endl;
     }
     catch (const HelpRequestedException& e) {

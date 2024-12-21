@@ -1,23 +1,13 @@
 #include "SoundProcessor.hpp"
 #include "exeptions.hpp"
-#define SAMPLE_RATE 44100
 
-std::unique_ptr<Converter> ConverterFactory::createConverter(Comand *cmd, DATA *data) {
-        if (cmd->getName() == "mute") {
-            return std::make_unique<Mute>(cmd);
-        } else if (cmd->getName() == "mix") {
-            return std::make_unique<Mix>(cmd, data->getInputFiles()[cmd->getArg(0)]);
-        } else if (cmd->getName() == "random") {
-            return std::make_unique<Random>(cmd);
-        }
-        return nullptr; 
-}
+#define SAMPLE_RATE 44100
 
 SoundProcessor::SoundProcessor(DATA *data, std::vector<Comand> *Comands) : data(data), Comands(Comands) {}
 
 SoundProcessor::~SoundProcessor() {}
 
-void SoundProcessor::process()
+void SoundProcessor::process(std::map<std::string, ConverterFactory*>converterFactoryMap)
 {
     WAV mainFile(data->getInputFiles()[0]);
     mainFile.readHeader();
@@ -35,15 +25,9 @@ void SoundProcessor::process()
         // Apply all commands to the current chunk
         for (auto cmd : *Comands)
         {
-            std::unique_ptr<Converter> converter = ConverterFactory::createConverter(&cmd, data);
-            if (converter)
-            {
-                converter->apply(mainFile, currentSample);
-            }
-            else
-            {
-                UnknownCommandException(cmd.getName());
-            }
+            auto& converterFactory = converterFactoryMap.at(cmd.getName());
+            std::unique_ptr<Converter> converter = converterFactory -> createConverter(&cmd, data);
+            converter->apply(mainFile, currentSample);
         }
         std::ofstream outputFile(data->getOutputFile(), std::ios::binary | std::ios::app);
         if (!outputFile)

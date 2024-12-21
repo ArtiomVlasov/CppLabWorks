@@ -48,34 +48,29 @@ public:
     virtual ~Random() = default;
 };
 
+class ConverterFactory {
+public:
+    virtual std::unique_ptr<Converter> createConverter(Comand* cmd, DATA *data) = 0;
+    virtual ~ConverterFactory() = default;
+};
 
+class MuteFactory : public ConverterFactory {
+public:
+    std::unique_ptr<Converter> createConverter(Comand* cmd, DATA *data) override {
+        return std::make_unique<Mute>(cmd);
+    }
+};
 
-// class ConverterFactory {
-// public:
-//     virtual std::unique_ptr<Converter> createConverter(Comand* cmd) = 0;
-//     virtual ~ConverterFactory() = default;
-// };
+class MixFactory : public ConverterFactory {
+public:
+    std::unique_ptr<Converter> createConverter(Comand* cmd, DATA *data) override {
+        return std::make_unique<Mix>(cmd,  data->getInputFiles()[cmd->getArg(0)]);
+    }
+};
 
-// class MuteFactory : public ConverterFactory {
-// public:
-//     std::unique_ptr<Converter> createConverter(Comand* cmd) override {
-//         return std::make_unique<Mute>(cmd);
-//     }
-// };
-
-// class MixFactory : public ConverterFactory {
-// private:
-//     std::string secondFilePath;
-// public:
-//     MixFactory(const std::string& filePath) : secondFilePath(filePath) {}
-//     std::unique_ptr<Converter> createConverter(Comand* cmd) override {
-//         return std::make_unique<Mix>(cmd, secondFilePath);
-//     }
-// };
-
-// class RandomFactory : public ConverterFactory {
-// public:
-//     std::unique_ptr<Converter> createConverter(Comand* cmd) override {
-//         return std::make_unique<Random>(cmd);
-//     }
-// };
+class RandomFactory : public ConverterFactory {
+public:
+    std::unique_ptr<Converter> createConverter(Comand* cmd, DATA *data) override {
+        return std::make_unique<Random>(cmd);
+    }
+};
