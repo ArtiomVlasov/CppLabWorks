@@ -32,7 +32,7 @@ void split(const std::string &str, std::vector<std::string> &cont, char delimite
         if (c == escapeChar && !saveNext)
         {
             inQuotes = !inQuotes;
-            continue;
+            
         }
         else if(c == escapeChar && saveNext){
             saveNext = false;
@@ -45,11 +45,15 @@ void split(const std::string &str, std::vector<std::string> &cont, char delimite
             ss.str("");
             ss.clear();
         }
-        else if(c == '\\' && !inQuotes){
+        else if(c == '\\' && inQuotes){
             saveNext = true;
         }
         else
         {
+            if(saveNext){
+                saveNext = false;
+                ss<<'\\';
+            }
             ss << c;
         }
     }
