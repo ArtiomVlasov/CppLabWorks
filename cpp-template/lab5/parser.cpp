@@ -24,20 +24,20 @@ std::string convert<std::string>(const std::string &str)
 void split(const std::string &str, std::vector<std::string> &cont, char delimiter = ',', char escapeChar = '"')
 {
     std::stringstream ss;
-    bool inQuotes = false;
     bool saveNext = false;
     cont.clear();
     for (char c : str)
     {
         if (c == escapeChar && !saveNext)
         {
-            inQuotes = !inQuotes;
+            continue;
         }
         else if (c != escapeChar && saveNext)
         {
             saveNext = false;
+            ss << c;
         }
-        else if (c == delimiter && !inQuotes)
+        else if (c == delimiter)
         {
             cont.push_back(ss.str());
             ss.str("");
@@ -55,39 +55,6 @@ void split(const std::string &str, std::vector<std::string> &cont, char delimite
     std::cout;
 }
 
-// Чтение элемента из строки в кортеж
-// template <std::size_t idx, typename... fields>
-// typename std::enable_if<idx >= std::tuple_size<std::tuple<fields...>>::value>::type
-// read_elem(std::tuple<fields...> &, const std::vector<std::string> &) {}
-
-// template <std::size_t idx, typename... fields>
-//     typename std::enable_if < idx<std::tuple_size<std::tuple<fields...>>::value>::type
-//                               read_elem(std::tuple<fields...> &tuple, const std::vector<std::string> &items)
-// {
-//     std::stringstream ss(items[idx]);
-//     ss >> std::get<idx>(tuple);
-//     if (ss.fail())
-//     {
-//         throw std::runtime_error("Failed to parse field at index " + std::to_string(idx));
-//     }
-//     read_elem<idx + 1>(tuple, items);
-// }
-
-// template <typename... fields>
-// void make_tuple(std::tuple<fields...> &tuple, const std::vector<std::string> &items)
-// {
-//     if (items.size() != sizeof...(fields))
-//     {
-//         throw std::runtime_error("Number of fields does not match tuple size");
-//     }
-//     read_elem<0>(tuple, items);
-//     // Отладочный вывод
-//     std::cout << "Tuple created: ";
-//     print_tuple(std::cout, tuple);
-//     std::cout << std::endl;
-// }
-
-// CSVParser
 template <typename... Args>
 class CSVParser
 {
@@ -121,7 +88,6 @@ public:
                 throw std::runtime_error("Unable to open file: " + f);
             }
 
-            // Пропускаем заданное количество строк
             std::string dummy;
             for (size_t i = 0; i < skip; ++i)
             {
@@ -132,11 +98,9 @@ public:
                 }
             }
 
-            // Читаем первую строку
             ++(*this);
         }
 
-        // Дефолтный конструктор для итератора end()
         iterator() : atEnd(true) {}
 
         iterator &operator++()
@@ -188,13 +152,13 @@ public:
 
     iterator end() const
     {
-        return iterator(); // Возвращает завершённый итератор
+        return iterator(); 
     }
 };
 
-// Печать кортежа
+
 template <typename Tuple, size_t... Is>
-void print_tuple_impl(std::ostream &os, const Tuple &t, std::index_sequence<Is...>)
+void printTupleImpl(std::ostream &os, const Tuple &t, std::index_sequence<Is...>)
 {
     ((os << (Is == 0 ? "" : ", ") << std::get<Is>(t)), ...);
 }
@@ -203,7 +167,7 @@ template <typename... Args>
 std::ostream &operator<<(std::ostream &os, const std::tuple<Args...> &t)
 {
     os << "(";
-    print_tuple_impl(os, t, std::index_sequence_for<Args...>{});
+    printTupleImpl(os, t, std::index_sequence_for<Args...>{});
     os << ")";
     return os;
 }
