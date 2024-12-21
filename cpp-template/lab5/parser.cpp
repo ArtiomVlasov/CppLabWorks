@@ -34,18 +34,18 @@ void split(const std::string &str, std::vector<std::string> &cont, char delimite
             inQuotes = !inQuotes;
             continue;
         }
-        else if (c != escapeChar && saveNext)
-        {
+        else if(c == escapeChar && saveNext){
             saveNext = false;
             ss << c;
         }
-        else if (c == delimiter)
+        
+        else if (c == delimiter && !inQuotes)
         {
             cont.push_back(ss.str());
             ss.str("");
             ss.clear();
         }
-        else if(c == '\\'){
+        else if(c == '\\' && !inQuotes){
             saveNext = true;
         }
         else
