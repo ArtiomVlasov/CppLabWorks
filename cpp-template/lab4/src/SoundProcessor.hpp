@@ -6,7 +6,7 @@
 #include <sstream>
 #include <memory>
 #include <map>
-#include "DATA.hpp"
+#include "Data.hpp"
 #include "WAV.hpp"
 #include "Converter.hpp"
 #include "Comands.hpp"

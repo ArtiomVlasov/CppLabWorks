@@ -1,4 +1,4 @@
-#include "DATA.hpp"
+#include "Data.hpp"
 #include "exeptions.hpp"
 
 DATA::DATA(int argc, char** argv) : argc(argc), argv(argv) {

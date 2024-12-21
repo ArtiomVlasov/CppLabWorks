@@ -3,11 +3,10 @@
 #include <random>
 #include <limits>
 #include "Comands.hpp"
-#include "DATA.hpp"
+#include "Data.hpp"
 #include "WAV.hpp"
 #include <memory>
 
-// virtual class for fabric 
 class Converter
 {
 private:

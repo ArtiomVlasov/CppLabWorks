@@ -27,7 +27,7 @@ void Mix::apply(WAV &file, size_t currentSample)
     if (currentSample >= startSample && currentSample <= endSample)
     {
         WAV secondFile(secondFilePath);
-        size_t chunkSize = SAMPLE_RATE; // 1 секунда аудио
+        size_t chunkSize = SAMPLE_RATE;
         size_t samplesToRead = std::min(chunkSize, endSample - currentSample);
         secondFile.setFileData(currentSample, samplesToRead);
         auto &mainSamples = file.getSamples();
@@ -37,7 +37,7 @@ void Mix::apply(WAV &file, size_t currentSample)
             mainSamples[i] = (mainSamples[i] + secondSamples[i]) / 2;
         }
     }
-    if (currentSample == endSample) // После обработки последнего чанка
+    if (currentSample == endSample)
     {
         std::cout << "applied mix command with file: " << secondFilePath << "; duration: " << startSample/SAMPLE_RATE << " " << endSample/SAMPLE_RATE << std::endl;
     }
@@ -65,7 +65,7 @@ void Random::apply(WAV &file, size_t currentSample)
             sample[i] = dist(gen);
         }
     }
-     if (currentSample == endSample) // После обработки последнего чанка
+     if (currentSample == endSample)
     {
          std::cout << "applied random command. duration: " << startSample / SAMPLE_RATE << " " <<  endSample/SAMPLE_RATE << std::endl;
     }

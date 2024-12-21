@@ -2,7 +2,6 @@
 #include <stdexcept>
 #include <cstring>
 #include "Converter.hpp"
-#include "DATA.hpp"
 #include "SoundProcessor.hpp"
 #include "Comands.hpp"
 #include "exeptions.hpp"

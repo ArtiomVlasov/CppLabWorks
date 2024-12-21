@@ -1,7 +1,6 @@
 #include <stdexcept>
 #include <string>
 
-// Базовое исключение для SoundProcessor
 class SoundProcessorException : public std::runtime_error
 {
 public:
@@ -9,7 +8,6 @@ public:
         : std::runtime_error(message + "\n") {}
 };
 
-// Исключения для работы с файлами
 class FileException : public SoundProcessorException
 {
 public:
@@ -38,7 +36,6 @@ public:
         : FileException("Failed to write in file: " + filename + "\n") {}
 };
 
-// Исключения для формата WAV
 class WAVFormatException : public SoundProcessorException
 {
 public:
@@ -60,7 +57,6 @@ public:
         : WAVFormatException("Header issue: " + detail + "\n") {}
 };
 
-// Исключения для обработки команд
 class CommandException : public SoundProcessorException
 {
 public:
@@ -82,7 +78,6 @@ public:
         : CommandException("Invalid arguments " + detail + "\n") {}
 };
 
-// Исключения для аргументов программы
 class ArgumentException : public SoundProcessorException
 {
 public:

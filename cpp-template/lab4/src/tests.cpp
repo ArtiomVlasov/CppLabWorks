@@ -2,7 +2,7 @@
 #include "Comands.hpp"
 #include "Converter.hpp"
 #include "WAV.hpp"
-#include "DATA.hpp"
+#include "Data.hpp"
 #include "SoundProcessor.hpp"
 
 TEST(ComandTest, ConstructorTest) {
@@ -44,7 +44,7 @@ TEST(RandomTest, ApplyRandomCommand) {
     auto samples = wav.getSamples();
     bool isRandom = false;
     for (auto s : samples) {
-        if (s != 1000) { // сэмплы изменились
+        if (s != 1000) { 
             isRandom = true;
             break;
         }

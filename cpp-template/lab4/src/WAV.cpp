@@ -18,25 +18,22 @@ void WAV::checkHeader()
         throw SoundProcessorException("Not WAV");
     }
     if (header.audioFormat != 1)
-    { // 1 соответствует PCM
+    { 
         throw WAVFormatException("not PCM.");
     }
 
-    // Проверка количества каналов
     if (header.numChannels != 1)
-    { // 1 канал для моно
+    { 
         throw WAVFormatException("not mono canal.");
     }
 
-    // Проверка разрядности
     if (header.bitsPerSample != 16)
-    { // 16 бит
+    {
         throw WAVFormatException("not 16 bit per sample");
     }
 
-    // Проверка частоты
     if (header.sampleRate != 44100)
-    { // 44100 Гц
+    {
         throw WAVFormatException("not 44100 Hz");
     }
 }
@@ -84,7 +81,7 @@ void WAV::setFileData(size_t startSample, size_t chunkSize)
     {
         throw FileOpenException(filepath);
     }
-    file.seekg(sizeof(WAVHEADER) + startSample * sizeof(short)); // Seek to the correct position.
+    file.seekg(sizeof(WAVHEADER) + startSample * sizeof(short));
 
     samples.clear();
     samples.resize(chunkSize);
